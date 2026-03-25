@@ -584,11 +584,17 @@
 ═══════════════════════════════════════════ -->
 <header class="masthead">
   <div class="masthead-top">
-    <span class="masthead-meta">Fondé en 2026 &nbsp;|&nbsp; Beyrouth, Liban</span>
+    <span class="masthead-meta">Fondé en 2024 &nbsp;|&nbsp; Beyrouth, Liban</span>
     <div class="masthead-logo" onclick="showHome()">Poverty<span>Index</span></div>
     <span class="masthead-meta">Édition Spéciale &nbsp;|&nbsp; La Crise Libanaise</span>
   </div>
   <div class="masthead-tagline">Analyses · Économie · Humanitaire · Politique</div>
+  <nav class="section-nav">
+    <button class="active" onclick="filterSection('all', this)">Tous les articles</button>
+    <button onclick="filterSection('eco', this)">Économie</button>
+    <button onclick="filterSection('social', this)">Social & Humanitaire</button>
+    <button onclick="filterSection('politique', this)">Politique & Solidarité</button>
+  </nav>
 </header>
 
 <!-- ═══════════════════════════════════════════
@@ -598,7 +604,7 @@
   <main class="home-wrap">
 
     <div class="edition-banner">
-      <p>Édition Spéciale — EMC premiere— 2025–2026</p>
+      <p>Édition Spéciale &mdash; EMC Terminale &mdash; 2024–2025</p>
       <h2>La pauvreté au Liban : causes, impacts et réponses d'une crise sans précédent</h2>
     </div>
 
@@ -717,7 +723,7 @@
   </main>
   <footer>
     <div class="footer-logo">PovertyIndex</div>
-    <p>Projet EMC &mdash; Jacob Kahi · Maria Abou Hanna · Emil Karaa &mdash; 2025–2026</p>
+    <p>Projet EMC &mdash; Jacob Kahi · Maria Abou Hanna · Emil Karaa &mdash; 2024–2025</p>
     <p style="margin-top:0.3rem;">Toutes les données sont issues de sources internationales vérifiées.</p>
   </footer>
 </div>
@@ -728,6 +734,7 @@
 <div id="article-screen" class="screen">
   <main class="article-view" id="article-content"></main>
 </div>
+
 <script>
 const articles = [
   {
@@ -972,8 +979,6 @@ const articles = [
 
 let currentSection = 'all';
 
-let currentSection = 'all';
-
 function filterSection(section, btn) {
   currentSection = section;
   document.querySelectorAll('.section-nav button').forEach(b => b.classList.remove('active'));
@@ -1019,7 +1024,7 @@ function showArticle(id) {
 
     <div class="article-byline-full">
       <span><strong>Par ${a.author}</strong></span>
-      <span>PovertyIndex · Édition 2025–2026</span>
+      <span>PovertyIndex · Édition 2024–2025</span>
     </div>
 
     <div class="hero-img-wrap">
@@ -1052,7 +1057,6 @@ function showArticle(id) {
   document.getElementById('article-screen').classList.add('active');
   window.scrollTo(0, 0);
 }
-
 </script>
 </body>
 </html>
