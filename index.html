@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PovertyIndex — Le Journal de la Crise Libanaise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #90ae85;
+    --wheat: #f0daa5;
+    --parchment: #dadbb5;
+    --cream-light: #f0edd2;
+    --off-white: #fffef9;
+    --ink: #1a1a18;
+    --ink-muted: #4a4a44;
+    --ink-faint: #8a8a80;
+    --rule: #c8c9a8;
+    --accent: #90ae85;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--off-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 0.5rem 2rem 0;
+    background: var(--off-white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0.4rem;
+  }
+
+  .masthead-meta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .masthead-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+  }
+
+  .masthead-logo span {
+    color: var(--sage);
+  }
+
+  .masthead-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  /* ── NAV SECTIONS ── */
+  .section-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0.3rem 0;
+  }
+
+  .section-nav button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    padding: 0.25rem 1rem;
+    cursor: pointer;
+    color: var(--ink-muted);
+    border-right: 1px solid var(--rule);
+    transition: color 0.2s;
+  }
+
+  .section-nav button:last-child { border-right: none; }
+  .section-nav button:hover { color: var(--ink); }
+  .section-nav button.active { color: var(--ink); font-weight: 500; border-bottom: 2px solid var(--sage); }
+
+  /* ── HOME GRID ── */
+  .home-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .edition-banner {
+    text-align: center;
+    padding: 1rem 0 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
+  }
+
+  .edition-banner p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+  }
+
+  .edition-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Featured article (top) */
+  .featured-article {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+  }
+
+  .featured-article:hover .article-headline { text-decoration: underline; text-decoration-color: var(--sage); }
+
+  .featured-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .featured-article .article-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+
+  .featured-article .article-deck {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .featured-article .article-byline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 0.6rem;
+  }
+
+  .featured-article .article-byline strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .featured-img {
+    background: var(--cream-light);
+    border: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-img .img-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 0.5rem;
+  }
+
+  .placeholder-graphic {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+  }
+
+  .placeholder-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--sage);
+    line-height: 1;
+  }
+
+  .placeholder-unit {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+
+  /* 3-col grid */
+  .article-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  .grid-article {
+    padding: 0 1.2rem 1.5rem;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+  }
+
+  .grid-article:first-child { padding-left: 0; }
+  .grid-article:last-child { border-right: none; padding-right: 0; }
+  .grid-article:hover .article-headline { text-decoration: underline; text-decoration-color: var(--sage); }
+
+  .grid-article .article-img {
+    background: var(--cream-light);
+    border: 1px solid var(--rule);
+    height: 140px;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grid-article .article-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .grid-article .article-deck {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    font-weight: 300;
+  }
+
+  .grid-article .article-byline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    margin-top: 0.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Bottom row: 2+1 split */
+  .article-grid-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+
+  /* Section header on home */
+  .section-header {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--off-white);
+    background: var(--ink);
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── ARTICLE VIEW ── */
+  .article-view {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  .article-view .back-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
+    padding: 0;
+    transition: color 0.2s;
+  }
+
+  .article-view .back-btn:hover { color: var(--ink); }
+
+  .article-view .article-section-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage);
+    display: block;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid var(--sage);
+    padding-bottom: 0.4rem;
+    display: inline-block;
+  }
+
+  .article-view h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+
+  .article-view .article-deck-full {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    margin-bottom: 1.2rem;
+    border-left: 3px solid var(--sage);
+    padding-left: 1rem;
+  }
+
+  .article-byline-full {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    display: flex;
+    gap: 1.5rem;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 0;
+    margin-bottom: 2rem;
+    letter-spacing: 0.03em;
+  }
+
+  .article-byline-full strong { color: var(--ink); font-weight: 500; }
+
+  .hero-img-wrap {
+    background: var(--cream-light);
+    border: 1px solid var(--rule);
+    margin-bottom: 0.4rem;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img-caption {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-bottom: 2rem;
+    padding-left: 0.5rem;
+    border-left: 2px solid var(--rule);
+  }
+
+  .article-body p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.02rem;
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+
+  .article-body p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    float: left;
+    line-height: 0.8;
+    margin: 0.1rem 0.1rem 0 0;
+    color: var(--ink);
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin: 2rem 0;
+    padding: 1.2rem 0;
+    text-align: center;
+  }
+
+  .pull-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  /* Stat box */
+  .stat-box {
+    background: var(--cream-light);
+    border: 1px solid var(--rule);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .stat-item .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--ink);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-item .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    margin-top: 0.3rem;
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .stat-box-header {
+    grid-column: 1 / -1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--off-white);
+    background: var(--ink);
+    padding: 0.25rem 0.6rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  /* Sources */
+  .sources-box {
+    background: var(--cream-light);
+    border-left: 3px solid var(--sage);
+    padding: 1rem 1.2rem;
+    margin-top: 3rem;
+  }
+
+  .sources-box h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.6rem;
+  }
+
+  .sources-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sources-box li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    padding: 0.2rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sources-box li:last-child { border-bottom: none; }
+
+  /* Footer */
+  footer {
+    border-top: 3px double var(--ink);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+
+  footer .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+
+  footer p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .featured-article { grid-template-columns: 1fr; }
+    .article-grid-3 { grid-template-columns: 1fr; }
+    .article-grid-bottom { grid-template-columns: 1fr; }
+    .grid-article { border-right: none; border-bottom: 1px solid var(--rule); padding: 1rem 0; }
+    .grid-article:last-child { border-bottom: none; }
+    .masthead-logo { font-size: 2rem; }
+    .article-view h1 { font-size: 2rem; }
+    .stat-box { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     MASTHEAD (always visible)
+═══════════════════════════════════════════ -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="masthead-meta">Fondé en 2026 &nbsp;|&nbsp; Beyrouth, Liban</span>
+    <div class="masthead-logo" onclick="showHome()">Poverty<span>Index</span></div>
+    <span class="masthead-meta">Édition Spéciale &nbsp;|&nbsp; La Crise Libanaise</span>
+  </div>
+  <div class="masthead-tagline">Analyses · Économie · Humanitaire · Politique</div>
+  <nav class="section-nav">
+    <button class="active" onclick="filterSection('all', this)">Tous les articles</button>
+    <button onclick="filterSection('eco', this)">Économie</button>
+    <button onclick="filterSection('social', this)">Social & Humanitaire</button>
+    <button onclick="filterSection('politique', this)">Politique & Solidarité</button>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HOME SCREEN
+═══════════════════════════════════════════ -->
+<div id="home-screen" class="screen active">
+  <main class="home-wrap">
+
+    <div class="edition-banner">
+      <p>Édition Spéciale &mdash; EMC Terminale &mdash; 2025–2026</p>
+      <h2>La pauvreté au Liban : causes, impacts et réponses d'une crise sans précédent</h2>
+    </div>
+
+    <!-- Featured -->
+    <div class="featured-article" onclick="showArticle(0)">
+      <div>
+        <span class="featured-label">À la une &mdash; Économie</span>
+        <h2 class="article-headline">L'effondrement de la livre : comment une monnaie s'évanouit en fumée</h2>
+        <p class="article-deck">Depuis 2019, la livre libanaise a perdu plus de 90 % de sa valeur. Une dévaluation sans précédent qui a transformé des économies de toute une vie en quelques billets sans valeur, plongeant des millions de Libanais dans la précarité.</p>
+        <div class="article-byline"><strong>Par Jacob Kahi</strong> &nbsp;·&nbsp; Axe I, Sous-axe 1</div>
+      </div>
+      <div class="featured-img">
+        <div class="placeholder-graphic">
+          <span class="placeholder-number">−90%</span>
+          <span class="placeholder-unit">Valeur perdue de la livre libanaise depuis 2019</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-col grid: articles 2, 3, 4 -->
+    <div class="article-grid-3" id="grid-main">
+
+      <div class="grid-article" data-section="eco" onclick="showArticle(1)">
+        <span class="featured-label">Économie</span>
+        <div class="article-img">
+          <div style="text-align:center;">
+            <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--sage);">30%</span>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;color:var(--ink-muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;">Taux de chômage</div>
+          </div>
+        </div>
+        <h3 class="article-headline">Chômage : une génération sacrifiée</h3>
+        <p class="article-deck">Avec un taux de chômage de 30 % et près de 50 % chez les jeunes, le marché du travail libanais s'est effondré aussi vite que l'économie.</p>
+        <div class="article-byline">Par <strong>Jacob Kahi</strong> · Axe I, Sous-axe 2</div>
+      </div>
+
+      <div class="grid-article" data-section="eco" onclick="showArticle(2)">
+        <span class="featured-label">Économie</span>
+        <div class="article-img">
+          <div style="text-align:center;">
+            <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--sage);">75%</span>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;color:var(--ink-muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;">Sous le seuil de pauvreté</div>
+          </div>
+        </div>
+        <h3 class="article-headline">Pauvreté de masse : trois quarts d'un peuple appauvri</h3>
+        <p class="article-deck">Les organismes internationaux estiment que trois quarts des Libanais vivent désormais sous le seuil de pauvreté. Un chiffre qui cache des réalités humaines déchirantes.</p>
+        <div class="article-byline">Par <strong>Jacob Kahi</strong> · Axe I, Sous-axe 3</div>
+      </div>
+
+      <div class="grid-article" data-section="social" onclick="showArticle(3)">
+        <span class="featured-label">Social & Humanitaire</span>
+        <div class="article-img">
+          <div style="text-align:center;">
+            <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--sage);">400K</span>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;color:var(--ink-muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;">En insécurité alimentaire grave</div>
+          </div>
+        </div>
+        <h3 class="article-headline">Faim, soins, eau : les besoins essentiels hors de portée</h3>
+        <p class="article-deck">Se nourrir, se soigner, accéder à l'eau potable. Ce qui paraissait acquis est devenu un luxe pour des centaines de milliers de familles libanaises.</p>
+        <div class="article-byline">Par <strong>Maria Abou Hanna</strong> · Axe II, Sous-axe 1</div>
+      </div>
+
+    </div>
+
+    <!-- Bottom 3-col -->
+    <div class="article-grid-bottom" id="grid-bottom">
+
+      <div class="grid-article" data-section="social" onclick="showArticle(4)">
+        <span class="featured-label">Social & Humanitaire</span>
+        <h3 class="article-headline">Des centaines de milliers d'enfants hors de l'école</h3>
+        <p class="article-deck">La crise économique a arraché des générations entières des bancs de l'école. Quand la survie prime sur l'avenir, c'est l'avenir lui-même qui se dérobe.</p>
+        <div class="article-byline">Par <strong>Maria Abou Hanna</strong> · Axe II, Sous-axe 2</div>
+      </div>
+
+      <div class="grid-article" data-section="social" onclick="showArticle(5)">
+        <span class="featured-label">Social & Humanitaire</span>
+        <h3 class="article-headline">Réfugiés, femmes, enfants : les invisibles de la crise</h3>
+        <p class="article-deck">90 % des réfugiés syriens au Liban vivent dans une extrême pauvreté. Les plus vulnérables paient le prix le plus lourd d'une crise qu'ils n'ont pas créée.</p>
+        <div class="article-byline">Par <strong>Maria Abou Hanna</strong> · Axe II, Sous-axe 3</div>
+      </div>
+
+      <div class="grid-article" data-section="politique" onclick="showArticle(6)">
+        <span class="featured-label">Politique & Solidarité</span>
+        <h3 class="article-headline">Élites paralysées, réformes bloquées : le cercle vicieux politique</h3>
+        <p class="article-deck">Le FMI attend des réformes. Les politiciens libanais les retardent. Pendant ce temps, la population attend. Un blocage structurel qui aggrave chaque jour la crise.</p>
+        <div class="article-byline">Par <strong>Emil Karaa</strong> · Axe III, Sous-axe 1</div>
+      </div>
+
+    </div>
+
+    <!-- Last row -->
+    <div class="article-grid-bottom" style="margin-top:0; border-top:1px solid var(--rule); padding-top:1.5rem;" id="grid-last">
+
+      <div class="grid-article" data-section="politique" onclick="showArticle(7)">
+        <span class="featured-label">Politique & Solidarité</span>
+        <h3 class="article-headline">L'ONU en première ligne : l'aide internationale face à l'urgence</h3>
+        <p class="article-deck">En 2023, 3,9 millions de Libanais avaient besoin d'une assistance directe. L'ONU, le PAM et les ONG tentent de combler les vides laissés par un État défaillant.</p>
+        <div class="article-byline">Par <strong>Emil Karaa</strong> · Axe III, Sous-axe 2</div>
+      </div>
+
+      <div class="grid-article" data-section="politique" onclick="showArticle(8)">
+        <span class="featured-label">Politique & Solidarité</span>
+        <h3 class="article-headline">La diaspora, dernier rempart : solidarité locale contre l'abandon de l'État</h3>
+        <p class="article-deck">Plusieurs milliards de dollars envoyés chaque année par la diaspora libanaise. Une bouée de sauvetage vitale quand l'État ne peut plus jouer son rôle.</p>
+        <div class="article-byline">Par <strong>Emil Karaa</strong> · Axe III, Sous-axe 3</div>
+      </div>
+
+      <div class="grid-article" style="display:flex;align-items:center;justify-content:center;background:var(--cream-light);border:1px solid var(--rule);">
+        <div style="text-align:center;padding:1rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--ink-muted);">"La pauvreté n'est pas une fatalité, c'est le résultat de choix politiques."</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:0.8rem;">— PovertyIndex Editorial</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+  <footer>
+    <div class="footer-logo">PovertyIndex</div>
+    <p>Projet EMC &mdash; Jacob Kahi · Maria Abou Hanna · Emil Karaa &mdash; 2025–2026</p>
+    <p style="margin-top:0.3rem;">Toutes les données sont issues de sources internationales vérifiées.</p>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ARTICLE SCREEN
+═══════════════════════════════════════════ -->
+<div id="article-screen" class="screen">
+  <main class="article-view" id="article-content"></main>
+</div>
+<script>
+const articles = [
+  {
+    id: 0,
+    section: 'eco',
+    sectionLabel: 'Économie — Axe I',
+    author: 'Jacob Kahi',
+    headline: "L'effondrement de la livre : comment une monnaie s'évanouit en fumée",
+    deck: "Depuis 2019, la livre libanaise a perdu plus de 90 % de sa valeur. Une dévaluation sans précédent qui a plongé des millions de Libanais dans la précarité absolue.",
+    imgLabel: "Des coupures de livres libanaises en circulation — Beyrouth, 2023",
+    stats: [
+      { num: '−90%', label: 'Valeur perdue de la LL' },
+      { num: '>1000%', label: 'Inflation cumulée 2019–2023' },
+      { num: '80%', label: 'Population sous le seuil' }
+    ],
+    pullquote: "Des économies de toute une vie se sont évaporées en quelques mois. La livre n'est plus qu'un symbole d'une souveraineté perdue.",
+    body: [
+      "Avant 2019, un dollar américain valait environ 1 500 livres libanaises. Aujourd'hui, il en faut plus de 90 000 sur le marché parallèle. Cette dévaluation cataclysmique est l'une des plus rapides et des plus sévères de l'histoire économique moderne, selon les rapports de la Banque mondiale.",
+      "L'effondrement monétaire a déclenché une spirale inflationniste dévastatrice. Les prix des produits alimentaires, du carburant et des médicaments ont été multipliés par des dizaines. Des familles qui se considéraient comme appartenant à la classe moyenne se retrouvent aujourd'hui incapables de couvrir leurs besoins fondamentaux.",
+      "Le système bancaire, autrefois vitrine du Liban comme 'Suisse du Moyen-Orient', a imposé des restrictions sévères sur les retraits. Des milliers de déposants ont vu leurs économies gelées, piégées dans des comptes qu'ils ne pouvaient plus utiliser. La crise de confiance envers les institutions financières est totale.",
+      "L'ESCWA — Commission économique et sociale de l'ONU pour l'Asie de l'Ouest — souligne que cette dévaluation touche de manière disproportionnée les ménages aux revenus fixes, les fonctionnaires, les retraités et les travailleurs journaliers. Ceux qui ne peuvent pas s'adapter à une économie dollarisée de fait sont laissés pour compte."
+    ],
+    sources: [
+      'Banque mondiale — Rapports sur la pauvreté au Liban (2021–2023)',
+      'ESCWA — Commission économique et sociale de l\'ONU pour l\'Asie de l\'Ouest',
+      'UNICEF — Rapports sur l\'inflation et la pauvreté (2021–2023)'
+    ]
+  },
+  {
+    id: 1,
+    section: 'eco',
+    sectionLabel: 'Économie — Axe I',
+    author: 'Jacob Kahi',
+    headline: "Chômage : une génération sacrifiée sur l'autel de la crise",
+    deck: "Le taux de chômage avoisine 30 % au Liban, et atteint près de 50 % chez les jeunes. Des milliers d'entreprises ont fermé, laissant des familles entières sans revenus.",
+    imgLabel: "File d'attente devant une agence pour l'emploi — Beyrouth, 2022",
+    stats: [
+      { num: '30%', label: 'Taux de chômage général' },
+      { num: '~50%', label: 'Chômage des jeunes' },
+      { num: 'Milliers', label: 'Entreprises fermées' }
+    ],
+    pullquote: "Avoir un diplôme universitaire au Liban ne suffit plus. Les jeunes diplômés font face à un marché du travail qui n'existe tout simplement plus.",
+    body: [
+      "En 2018, le taux de chômage au Liban tournait autour de 11 %. Aujourd'hui, les estimations les plus prudentes le situent à 30 %, tandis que certaines organisations internationales avancent des chiffres encore plus élevés dans certaines régions. Le grand perdant de cette crise est la jeunesse libanaise.",
+      "Des secteurs entiers se sont effondrés. L'hôtellerie, la restauration, le commerce de détail, les petites manufactures : autant de domaines qui employaient une large part de la population active et qui ont été balayés par la combinaison de la crise économique, de la pandémie de Covid-19 et de l'explosion du port de Beyrouth en 2020.",
+      "Les salaires de ceux qui ont conservé leur emploi ont été ravagés par l'inflation. Un fonctionnaire payé en livres libanaises voit son pouvoir d'achat s'éroder de mois en mois. La seule façon de maintenir un niveau de vie acceptable est d'être payé en dollars — un privilège réservé à une minorité.",
+      "La fuite des cerveaux s'accélère. Des médecins, des ingénieurs, des enseignants quittent le pays en masse pour l'Allemagne, le Canada, les pays du Golfe ou la France. Cette hémorragie de compétences compromet toute perspective de reconstruction économique à long terme."
+    ],
+    sources: [
+      'Banque mondiale — Rapports sur la pauvreté au Liban (2021–2023)',
+      'ESCWA — Commission économique et sociale de l\'ONU pour l\'Asie de l\'Ouest',
+      'UNICEF — Rapports sur l\'inflation et la pauvreté (2021–2023)'
+    ]
+  },
+  {
+    id: 2,
+    section: 'eco',
+    sectionLabel: 'Économie — Axe I',
+    author: 'Jacob Kahi',
+    headline: "Pauvreté de masse : trois quarts d'un peuple appauvri",
+    deck: "Environ 75 % des Libanais vivent désormais sous le seuil de pauvreté. La crise bancaire et l'endettement de l'État alimentent un cercle vicieux dont il est difficile de sortir.",
+    imgLabel: "Quartier de Bourj Hammoud — une réalité quotidienne de précarité",
+    stats: [
+      { num: '75%', label: 'Sous le seuil de pauvreté' },
+      { num: '36%', label: 'En pauvreté extrême' },
+      { num: '+170%', label: 'Endettement public/PIB' }
+    ],
+    pullquote: "Le Liban est passé en moins de cinq ans d'un pays à revenu intermédiaire supérieur à l'une des crises de pauvreté les plus rapides de l'histoire récente.",
+    body: [
+      "La Banque mondiale qualifie la crise libanaise de l'une des pires dépressions économiques mondiales depuis le milieu du XIXe siècle. Ce jugement lapidaire cache une réalité humaine dévastatrice : des millions de personnes qui n'avaient jamais connu la pauvreté se retrouvent aujourd'hui incapables de subvenir à leurs besoins élémentaires.",
+      "La crise bancaire joue un rôle central dans cet appauvrissement de masse. L'État libanais a accumulé des dettes colossales auprès du système bancaire local, qui a lui-même financé ces dettes avec les dépôts des épargnants. Lorsque l'État s'est retrouvé insolvable, c'est l'ensemble de la chaîne qui s'est effondrée.",
+      "Les mécanismes de protection sociale, déjà fragiles avant la crise, sont aujourd'hui quasiment inexistants. Il n'existe pas de système d'assurance chômage national, les aides sociales sont minimes et mal ciblées, et les réseaux de solidarité informels — familles, communautés religieuses — sont eux-mêmes à bout de souffle.",
+      "L'UNICEF alerte sur une paupérisation particulièrement alarmante des enfants. Près d'un enfant sur trois souffre de malnutrition modérée à sévère dans certaines régions. Les indicateurs de développement humain, péniblement construits au fil des décennies, reculent à grande vitesse."
+    ],
+    sources: [
+      'Banque mondiale — Rapports sur la pauvreté au Liban (2021–2023)',
+      'ESCWA — Commission économique et sociale de l\'ONU pour l\'Asie de l\'Ouest',
+      'UNICEF — Rapports sur l\'inflation et la pauvreté (2021–2023)'
+    ]
+  },
+  {
+    id: 3,
+    section: 'social',
+    sectionLabel: 'Social & Humanitaire — Axe II',
+    author: 'Maria Abou Hanna',
+    headline: "Faim, soins, eau : les besoins essentiels devenus hors de portée",
+    deck: "Plus de 400 000 personnes sont en insécurité alimentaire grave au Liban. Se nourrir, se soigner, accéder à l'eau potable : ce qui semblait acquis est devenu un luxe.",
+    imgLabel: "Distribution alimentaire par une ONG dans les quartiers de Beyrouth",
+    stats: [
+      { num: '+400K', label: 'En insécurité alimentaire grave' },
+      { num: '70%', label: 'Réduisent leurs dépenses santé' },
+      { num: '20h/j', label: 'Coupures d\'électricité moyennes' }
+    ],
+    pullquote: "Des familles qui avaient toujours eu à manger, qui se soignaient normalement, se retrouvent à choisir entre acheter du pain et acheter un médicament.",
+    body: [
+      "L'accès à la nourriture s'est profondément dégradé pour une large partie de la population libanaise. Selon les données du Programme alimentaire mondial (PAM), plus de 400 000 personnes souffrent d'une insécurité alimentaire grave — c'est-à-dire qu'elles ne peuvent pas garantir trois repas par jour à leur famille. Des millions d'autres se trouvent dans une situation d'insécurité alimentaire modérée.",
+      "Le secteur de la santé est lui aussi sinistré. La livre libanaise ayant perdu l'essentiel de sa valeur, le coût des médicaments importés — libellés en dollars — a explosé. Des patients atteints de maladies chroniques comme le diabète ou l'hypertension renoncent à leurs traitements, faute de moyens. Des hôpitaux manquent de matériel, de carburant pour faire tourner leurs générateurs, voire de médicaments de base.",
+      "La crise électrique aggrave tout le reste. Avec des coupures pouvant atteindre vingt heures par jour dans certaines régions, les ménages dépendent de générateurs privés hors de prix. Sans électricité, pas de pompage d'eau, pas de réfrigération pour les médicaments, pas d'accès à Internet pour les cours en ligne. La chaîne des privations s'allonge.",
+      "Action contre la Faim et la Croix-Rouge documentent une hausse significative des cas de malnutrition infantile, notamment dans les camps de réfugiés et les quartiers défavorisés. Des signes qui rappellent des situations que le Liban n'avait pas connues depuis des décennies."
+    ],
+    sources: [
+      'UNICEF — Rapports sur l\'éducation et la santé au Liban (2023–2025)',
+      'HCR — Haut-Commissariat des Nations Unies pour les réfugiés',
+      'Action contre la Faim — Rapports humanitaires Liban',
+      'Croix-Rouge internationale — Bilans terrain 2022–2024'
+    ]
+  },
+  {
+    id: 4,
+    section: 'social',
+    sectionLabel: 'Social & Humanitaire — Axe II',
+    author: 'Maria Abou Hanna',
+    headline: "Des centaines de milliers d'enfants hors de l'école : une génération sacrifiée",
+    deck: "La crise économique a arraché des générations entières des bancs scolaires. Quand la survie quotidienne prime sur tout, c'est l'avenir d'un pays tout entier qui se dérobe.",
+    imgLabel: "École publique au Liban — manque de ressources et absentéisme croissant",
+    stats: [
+      { num: '+700K', label: 'Enfants hors de l\'école' },
+      { num: '60%', label: 'Enseignants ayant quitté le public' },
+      { num: '1/3', label: 'Écoles endommagées ou fermées' }
+    ],
+    pullquote: "Quand un enfant quitte l'école pour travailler à neuf ans, c'est toute une trajectoire de vie qui bascule. Ce ne sont pas des statistiques, ce sont des destins.",
+    body: [
+      "Le droit à l'éducation est l'une des premières victimes de la crise économique au Liban. L'UNICEF estime que plus de 700 000 enfants libanais, syriens et palestiniens sont aujourd'hui déscolarisés ou en risque de décrochage. La cause principale est simple et brutale : les familles n'ont plus les moyens d'assumer les frais scolaires, même dans les établissements publics.",
+      "Les écoles publiques elles-mêmes sont à bout. La dévaluation de la livre a réduit à néant les salaires des enseignants. Des milliers d'entre eux ont rejoint le secteur privé, émigré, ou simplement abandonné l'enseignement. Certaines écoles ne peuvent plus garantir une année scolaire complète, faute d'enseignants en nombre suffisant.",
+      "Des enfants, notamment parmi les familles réfugiées, ont été contraints de rejoindre le marché du travail informel dès l'âge de huit ou neuf ans. On les retrouve dans les marchés, les chantiers, à ramasser des déchets. Des ONG sur le terrain documentent une recrudescence du travail des enfants, directement corrélée à l'aggravation de la crise.",
+      "Les conséquences à long terme sont considérables. Une génération peu ou pas scolarisée représente une bombe à retardement pour le développement économique et social du Liban. Là où l'éducation était traditionnellement considérée comme la voie de sortie de la pauvreté, c'est maintenant la pauvreté elle-même qui ferme les portes de l'éducation."
+    ],
+    sources: [
+      'UNICEF — Rapports sur l\'éducation et la santé au Liban (2023–2025)',
+      'HCR — Haut-Commissariat des Nations Unies pour les réfugiés',
+      'Action contre la Faim — Rapports humanitaires Liban'
+    ]
+  },
+  {
+    id: 5,
+    section: 'social',
+    sectionLabel: 'Social & Humanitaire — Axe II',
+    author: 'Maria Abou Hanna',
+    headline: "Réfugiés, femmes, enfants : les invisibles de la crise portent le plus lourd fardeau",
+    deck: "90 % des réfugiés syriens au Liban vivent dans une extrême pauvreté. Les populations les plus vulnérables — femmes, enfants, réfugiés — paient le prix d'une crise qu'ils n'ont pas créée.",
+    imgLabel: "Camp informel de réfugiés syriens dans la plaine de la Bekaa",
+    stats: [
+      { num: '1,5M', label: 'Réfugiés syriens au Liban' },
+      { num: '90%', label: 'En pauvreté extrême' },
+      { num: '+250K', label: 'Réfugiés palestiniens' }
+    ],
+    pullquote: "Être réfugié au Liban, c'est être pauvre parmi les pauvres. Quand la crise frappe tout le monde, ceux qui n'ont rien sont les premiers à sombrer.",
+    body: [
+      "Le Liban accueille l'une des plus grandes concentrations de réfugiés par habitant au monde. Environ 1,5 million de réfugiés syriens et plus de 250 000 réfugiés palestiniens vivent sur son territoire. Ces populations, déjà fragilisées par l'exil et des années de précarité, sont aujourd'hui écrasées par la double peine de leur statut et de la crise économique libanaise.",
+      "Le HCR estime que 90 % des réfugiés syriens au Liban vivent dans une extrême pauvreté — c'est-à-dire avec moins de 1,90 dollar par jour. Ils n'ont généralement pas accès aux emplois formels, sont exclus de nombreux services publics et vivent dans des logements précaires, souvent sans eau courante ni électricité stable.",
+      "Les femmes constituent une catégorie particulièrement vulnérable au sein de cette crise. Beaucoup sont cheffes de famille seules, après le départ ou la mort de leur conjoint. La violence domestique a augmenté selon les organisations humanitaires, corrélée à la pression économique et au stress lié à la survie. Leurs accès aux soins de santé reproductive se sont considérablement dégradés.",
+      "Les personnes âgées forment un autre groupe invisible et largement oublié. Leurs pensions en livres libanaises ne valent plus rien. Celles qui dépendaient de leurs enfants voient ce filet de sécurité s'éroder à mesure que leurs proches émigrent ou s'appauvrissent eux-mêmes. La vieillesse dans la dignité est devenue un privilège au Liban."
+    ],
+    sources: [
+      'HCR — Haut-Commissariat des Nations Unies pour les réfugiés',
+      'UNICEF — Rapports sur l\'éducation et la santé au Liban (2023–2025)',
+      'Action contre la Faim — Rapports humanitaires Liban',
+      'Croix-Rouge internationale — Bilans terrain 2022–2024'
+    ]
+  },
+  {
+    id: 6,
+    section: 'politique',
+    sectionLabel: 'Politique & Solidarité — Axe III',
+    author: 'Emil Karaa',
+    headline: "Élites paralysées, réformes bloquées : le cercle vicieux de l'impuissance politique",
+    deck: "Le FMI attend des réformes structurelles depuis 2022. Les dirigeants libanais les repoussent indéfiniment. Pendant ce temps, la population continue de s'appauvrir. Un blocage qui a un coût humain immense.",
+    imgLabel: "Le Palais du Parlement de Beyrouth — symbole d'un pouvoir bloqué",
+    stats: [
+      { num: '2+ ans', label: 'Sans président de la République' },
+      { num: '3Mrd$', label: 'Accord FMI non appliqué' },
+      { num: '0', label: 'Réforme bancaire adoptée' }
+    ],
+    pullquote: "On ne peut pas reconstruire un pays dont les élites se disputent les débris. Tant que la classe politique ne réformera pas, aucune aide internationale ne suffira.",
+    body: [
+      "En avril 2022, le Liban et le Fonds monétaire international ont conclu un accord de principe portant sur une aide de 3 milliards de dollars. Cette aide était conditionnée à l'adoption d'une série de réformes : restructuration du secteur bancaire, audit des finances publiques, levée des subventions, refonte de la politique fiscale. Trois ans plus tard, presque aucune de ces réformes n'a été appliquée.",
+      "Le système politique libanais, fondé sur le confessionnalisme — la répartition des postes selon l'appartenance religieuse — est structurellement résistant au changement. Chaque réforme menace des équilibres de pouvoir soigneusement préservés depuis des décennies. Chaque groupe politique protège ses propres intérêts et ceux de sa communauté, au détriment de l'intérêt général.",
+      "Le pays a vécu plus de deux ans sans président de la République entre 2022 et 2024, les factions politiques étant incapables de s'entendre sur un candidat. Cette vacance au sommet de l'État a paralysé les institutions et rendu impossible toute prise de décision cohérente sur les dossiers économiques urgents.",
+      "La corruption endémique aggrave encore la situation. Des rapports d'organisations anticorruption pointent des détournements de fonds publics, des marchés publics truqués, une justice aux ordres. Dans ce contexte, la méfiance de la population envers les institutions est totale, et la légitimité de l'État s'effrite à grande vitesse."
+    ],
+    sources: [
+      'FMI — Accord de 2022 avec le Liban et rapports de suivi',
+      'ONU et PAM — Rapports humanitaires 2022–2024',
+      'L\'Orient-Le Jour — Dossiers politiques et économiques'
+    ]
+  },
+  {
+    id: 7,
+    section: 'politique',
+    sectionLabel: 'Politique & Solidarité — Axe III',
+    author: 'Emil Karaa',
+    headline: "L'ONU en première ligne : quand l'aide internationale tente de combler le vide d'un État défaillant",
+    deck: "En 2023, 3,9 millions de Libanais avaient besoin d'une assistance directe. Les Nations Unies, le PAM et des dizaines d'ONG tentent de pallier l'absence d'un État qui ne peut plus assurer ses fonctions élémentaires.",
+    imgLabel: "Convoi humanitaire du Programme alimentaire mondial — Liban, 2023",
+    stats: [
+      { num: '3,9M', label: 'Personnes ayant besoin d\'aide en 2023' },
+      { num: '6Mrd$', label: 'Aide internationale engagée 2020–2023' },
+      { num: '50+', label: 'ONG actives sur le terrain' }
+    ],
+    pullquote: "L'aide humanitaire ne remplace pas un État. Elle panse les plaies mais ne guérit pas la maladie. Sans réformes politiques, nous courrons après la catastrophe.",
+    body: [
+      "Face à l'ampleur de la crise, la communauté internationale a massivement mobilisé des ressources. Le Programme alimentaire mondial fournit des bons alimentaires à des centaines de milliers de familles. L'UNICEF finance des écoles, des centres de santé, des distributions d'eau potable. Le HCR soutient les réfugiés les plus vulnérables. Ensemble, ces agences onusiennes couvrent des besoins que l'État libanais n'est plus en mesure d'assurer.",
+      "Mais les ONG présentes sur le terrain soulèvent une question fondamentale : jusqu'où peut aller l'aide internationale sans engager les réformes structurelles qui permettraient au Liban de se prendre en charge lui-même ? L'aide d'urgence est indispensable à court terme, mais elle peut aussi, si elle n'est pas accompagnée de réformes, créer une dépendance chronique et déresponsabiliser les élites politiques.",
+      "Des conférences internationales de soutien au Liban — Rome, Paris, Bruxelles — ont permis de lever des milliards de dollars d'engagements. Mais une partie significative de ces fonds n'a jamais été décaissée, conditionnée justement à des avancées politiques et économiques que Beyrouth n'a pas réalisées. Le cercle vicieux de l'aide bloquée par l'absence de réforme, et de la réforme bloquée par l'absence de volonté politique, continue.",
+      "Des organisations comme Solidarités International ou Médecins Sans Frontières tirent régulièrement la sonnette d'alarme. Elles documentent une dégradation continue des indicateurs humanitaires, malgré les milliards d'aide engagés. La conclusion s'impose : sans État fonctionnel et sans réformes politiques, l'aide humanitaire ne peut que retarder, sans les prévenir, les effondrements à venir."
+    ],
+    sources: [
+      'ONU et PAM — Rapports humanitaires 2022–2024',
+      'FMI — Accord de 2022 avec le Liban',
+      'Action contre la Faim, Solidarités International — Rapports terrain',
+      'L\'Orient-Le Jour — Dossiers humanitaires'
+    ]
+  },
+  {
+    id: 8,
+    section: 'politique',
+    sectionLabel: 'Politique & Solidarité — Axe III',
+    author: 'Emil Karaa',
+    headline: "La diaspora et la solidarité locale : le dernier rempart quand l'État abdique",
+    deck: "Plusieurs milliards de dollars envoyés chaque année par la diaspora libanaise, des associations locales qui se substituent aux services publics : face à l'effondrement de l'État, la société civile tient le pays à bout de bras.",
+    imgLabel: "Association locale distribuant des repas chauds à Tripoli",
+    stats: [
+      { num: '6–8Mrd$', label: 'Transferts diaspora/an (estimation)' },
+      { num: '15M+', label: 'Libanais dans la diaspora mondiale' },
+      { num: '300+', label: 'Associations civiles actives' }
+    ],
+    pullquote: "Sans la diaspora, le Liban se serait effondré encore plus vite. Ce sont des millions de familles maintenues à flot par des virements internationaux, pas par leur propre gouvernement.",
+    body: [
+      "Les transferts de fonds de la diaspora libanaise représentent l'un des piliers les plus discrets mais les plus essentiels de la survie économique du pays. On estime à plus de 15 millions le nombre de Libanais vivant à l'étranger — au Brésil, en Australie, en Côte d'Ivoire, en France, au Canada, dans les pays du Golfe. Chaque année, ils envoient entre 6 et 8 milliards de dollars à leurs familles restées au Liban.",
+      "Ces transferts représentent une part du PIB libanais parmi les plus élevées au monde. Pour beaucoup de familles, c'est la seule source de revenus stables, libellés en devises étrangères et donc protégés de la dévaluation de la livre. Un virement mensuel d'un fils ou d'une fille installé à Paris ou à Montréal fait souvent la différence entre manger et ne pas manger.",
+      "Sur le terrain, des centaines d'associations locales, de collectifs de quartier et d'initiatives communautaires tentent de combler les vides laissés par l'État. Des épiceries sociales, des cuisines communautaires, des cliniques bénévoles, des fonds d'aide à la scolarisation : la société civile libanaise, réputée pour sa résilience, s'organise pour survivre malgré l'absence de politiques publiques adaptées.",
+      "Cette solidarité, bien que vitale, a ses limites. Elle ne peut pas remplacer un système de protection sociale structuré, des politiques publiques cohérentes ou des investissements dans les infrastructures. Elle risque aussi de s'épuiser si la crise se prolonge et que les membres de la diaspora, eux-mêmes confrontés à des difficultés économiques dans leurs pays d'accueil, ne peuvent plus maintenir le même niveau d'envois. La solidarité est précieuse, mais elle n'est pas un substitut à la gouvernance."
+    ],
+    sources: [
+      'ONU et PAM — Rapports humanitaires 2022–2024',
+      'Action contre la Faim, Solidarités International — Rapports terrain',
+      'L\'Orient-Le Jour — Dossiers sociaux et diaspora',
+      'Banque mondiale — Données sur les transferts de fonds au Liban'
+    ]
+  }
+];
+
+let currentSection = 'all';
+
+let currentSection = 'all';
+
+function filterSection(section, btn) {
+  currentSection = section;
+  document.querySelectorAll('.section-nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const allArticles = document.querySelectorAll('[data-section]');
+  allArticles.forEach(el => {
+    el.style.opacity = '1';
+    el.style.outline = 'none';
+    if (section !== 'all' && el.dataset.section !== section) {
+      el.style.opacity = '0.25';
+      el.style.pointerEvents = 'none';
+    } else {
+      el.style.pointerEvents = '';
+    }
+  });
+}
+
+function showHome() {
+  document.getElementById('home-screen').classList.add('active');
+  document.getElementById('article-screen').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+function showArticle(id) {
+  const a = articles[id];
+  const statsHTML = a.stats.map(s => `
+    <div class="stat-item">
+      <span class="stat-num">${s.num}</span>
+      <span class="stat-label">${s.label}</span>
+    </div>
+  `).join('');
+
+  const bodyHTML = a.body.map(p => `<p>${p}</p>`).join('');
+  const sourcesHTML = a.sources.map(s => `<li>${s}</li>`).join('');
+
+  document.getElementById('article-content').innerHTML = `
+    <button class="back-btn" onclick="showHome()">← Retour à l'accueil</button>
+
+    <span class="article-section-tag">${a.sectionLabel}</span>
+    <h1>${a.headline}</h1>
+    <div class="article-deck-full">${a.deck}</div>
+
+    <div class="article-byline-full">
+      <span><strong>Par ${a.author}</strong></span>
+      <span>PovertyIndex · Édition 2025–2026</span>
+    </div>
+
+    <div class="hero-img-wrap">
+      <div style="text-align:center;padding:2rem;">
+        <span style="font-family:'Playfair Display',serif;font-size:0.85rem;font-style:italic;color:var(--ink-faint);">[Illustration / Photographie]</span>
+      </div>
+    </div>
+    <p class="img-caption">${a.imgLabel}</p>
+
+    <div class="stat-box">
+      <div class="stat-box-header" style="grid-column:1/-1;">Chiffres clés</div>
+      ${statsHTML}
+    </div>
+
+    <div class="article-body">
+      ${bodyHTML}
+    </div>
+
+    <div class="pull-quote">
+      <blockquote>"${a.pullquote}"</blockquote>
+    </div>
+
+    <div class="sources-box">
+      <h4>Sources</h4>
+      <ul>${sourcesHTML}</ul>
+    </div>
+  `;
+
+  document.getElementById('home-screen').classList.remove('active');
+  document.getElementById('article-screen').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+</script>
+</body>
+</html>
